@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300&display=swap" rel="stylesheet">
+        <title>Project2</title>
+        <style>
+            #result{
+                font-size: 30px;
+            }
+            .btn1{
+                position: center;
+                text-decoration: none;
+                font-size: 18px;   
+                padding: 10px; 
+                margin: 5px;
+                display: inline-block;
+                border-radius: 10px;
+                transition: all 0.2s;
+                text-shadow: 0px -2px rgba(250, 255, 254, 0);
+            }
+            .btn1:active{
+                transform: translateY(3px);
+            }
+            .btn1.btn1{
+                margin-top:10px;
+                background-color:rgb(249, 126, 126);
+                border-bottom: 5px solid rgb(126, 61, 230);
+            }
+            .btn1.btn1:active{
+                border-bottom: 2px solid rgb(126, 61, 230);
+            }
+            .btn2{
+                position: center;
+                text-decoration: none;
+                font-size: 18px;   
+                padding: 10px; 
+                margin: 5px;
+                display: inline-block;
+                border-radius: 10px;
+                transition: all 0.2s;
+                text-shadow: 0px -2px rgba(250, 255, 254, 0);
+            }
+            .btn2:active{
+                transform: translateY(3px);
+            }
+            .btn2.btn2{
+                margin-top:10px;
+                background-color:rgb(249, 126, 126);
+                border-bottom: 5px solid rgb(126, 61, 230);
+            }
+            .btn2.btn2:active{
+                border-bottom: 2px solid rgb(126, 61, 230);
+            }
+            .btn3{
+                position: center;
+                text-decoration: none;
+                font-size: 18px;   
+                padding: 10px; 
+                margin: 5px;
+                display: inline-block;
+                border-radius: 10px;
+                transition: all 0.2s;
+                text-shadow: 0px -2px rgba(250, 255, 254, 0);
+            }
+            .btn3:active{
+                transform: translateY(3px);
+            }
+            .btn3.btn3{
+                margin-top:10px;
+                background-color:rgb(249, 126, 126);
+                border-bottom: 5px solid rgb(126, 61, 230);
+            }
+            .btn3.btn3:active{
+                border-bottom: 2px solid rgb(126, 61, 230);
+            }
+            body{
+                position: relative;
+                background:rgb(170, 234, 252)
+            }
+            .title{
+                margin-top: 30px;
+                margin-bottom:5px;
+                text-align: center;
+                font-size: 50px;
+                font-weight: bold;
+            }
+            .subtitle{
+                font-family:'Noto Serif KR';
+                margin-top:10px;
+                margin-bottom:20px;
+                text-align: center;
+                font-size:30px;
+                font-weight: 300;
+            }
+            .main{
+                position: center;
+                width: 800px;
+                margin-top: 60px;
+                margin: 0 auto;
+            }
+            .textarea{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>News_Classifier</h1>
+        </header>
+        <hr>
+        <div align ='center'>
+            <div class="main">
+                <div class="title">
+                    <img src="{{url_for('static',filename = '/img/world-news.png')}}" style="width:100px; height:100px;">
+                </div>
+                <div class="subtitle">
+                    아래 공간에 기사의 내용 혹은 단어을 입력하세요.
+                </div>
+                <textarea id="q" cols="100" rows="25" placeholder="기사 전체를 스크랩해서 붙여넣거나 단어를 입력하고 아래 버튼을 누르세요."></textarea>
+                <br>
+                <p>뉴스는 "정치, 외교, 행정, 투자, 경제, 생활, 사건, 복지, 보건, 사회, 아시아, 미국, 유럽, 세계" <br>
+                    14개 중 하나로 분류됩니다.
+                </p>
+                <hr/>
+                <div id="result"></div>                        
+                <a class="btn1">기사 분류하기</a>
+                <a class="btn2" href="https://news.google.com/topstories?hl=ko&gl=KR&ceid=KR%3Ako" target="_blank">구글뉴스 이동</a>
+                <a class="btn3" href="https://www.youtube.com/" target="_blank">유튜브 이동</a>
+            </div>
+        </div>
+        <script>
+            const qs = (q) => document.querySelector(q)
+            window.onload = () => {
+                const q = qs('#q')
+                const btn1 = qs('.btn1')
+                const result = qs('#result')
+                // 판정 버튼을 눌렀을 때 --- ( ※ 1)
+                btn1.onclick = () => {
+                    result.innerHTML = "..."
+                    // URL 생성하기 --- ( ※ 2)
+                    const api = "/api?q=" + encodeURIComponent(q.value)
+                    // API에 접근하기 --- ( ※ 3)
+                    fetch(api).then((res) => {
+                        return res.json() // JSON 응답
+                    }).then((data) => {
+                        // 결과를 화면에 출력하기 --- ( ※ 4)
+                        result.innerHTML =
+                            data["label"] +
+                            "<span style='font-size:11px'>(" + "신뢰도:" + data["pre"] + ")</span style>" 
+                    })
+                }
+            }
+        </script>
+    </body>
+</html>
